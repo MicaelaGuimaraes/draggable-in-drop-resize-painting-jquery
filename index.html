@@ -2,6 +2,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Draggable In Drop Resize Painting Jquery</title>
     <link rel="stylesheet" href="./index.css" />
     <link
       rel="stylesheet"
@@ -105,7 +106,6 @@
 
         $.each(PATH_PAINTING, function (i, v) {
           $.each(v, function (i, vl) {
-            console.log(vl.name);
             if (vl.name.includes(`${PAINTING_ID}`))
               insertCard(BTN_ADDING_PAINTING_PREFIX, vl.name, vl.path);
             else insertCard(SCENE_PREFIX, vl.name, vl.path);
