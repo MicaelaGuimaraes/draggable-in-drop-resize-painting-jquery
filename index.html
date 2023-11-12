@@ -1,0 +1,180 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./index.css" />
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row mt-4 mb-4">
+        <div class="col-md-3 col-lg-3">
+          <div class="mb-3">
+            <div>
+              <label for="colors">Colors:</label>
+              <br />
+              <button
+                class="btn btn-outline-primary ml-2"
+                onclick="setColor('blue')"
+              >
+                Blue
+              </button>
+              <button
+                class="btn btn-outline-danger ml-2"
+                onclick="setColor('red')"
+              >
+                Red
+              </button>
+              <button
+                class="btn btn-outline-dark ml-2"
+                onclick="setColor('black')"
+              >
+                Black
+              </button>
+              <button
+                class="btn btn-outline-warning ml-2"
+                onclick="setColor('yellow')"
+              >
+                Yellow
+              </button>
+            </div>
+            <div>
+              <label for="colorPicker">Color picker:</label><br />
+              <input id="colorPicker" type="color" />
+            </div>
+          </div>
+          <div>
+            <label>Change scene:</label>
+            <div class="row mt-2" id="card-scene"></div>
+          </div>
+          <div>
+            <label>Adding Painting in scene:</label>
+            <div class="row mt-2" id="card-painting-scene"></div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-6 mb-4">
+          <div id="card-painting" class="container-card"></div>
+        </div>
+      </div>
+    </div>
+    <script>
+      let colorPicker;
+      const PAINTING_ID = "painting";
+      const DEFAULT_COLOR = "#5f5f81";
+      const PATH_IMAGE_DEFAULT = "./image/emptyRoom1.png";
+      const BTN_ADDING_PAINTING_PREFIX = "btn-adding-painting-";
+      const SCENE_PREFIX = "image-scene-";
+      const PATH_PAINTING = {
+        paintings: [
+          { name: "painting1", path: "./painting/painting1.jpg" },
+          { name: "painting2", path: "./painting/painting2.jpg" },
+        ],
+        scene: [
+          { name: "emptyRoom1", path: "./image/emptyRoom1.png" },
+          { name: "emptyRoom", path: "./image/emptyRoom.png" },
+        ],
+      };
+
+      window.addEventListener("load", startup, false);
+
+      function startup() {
+        $("#colorPicker").val(DEFAULT_COLOR);
+        $("#colorPicker").on("change", setColor);
+
+        $("#card-painting")
+          .css("background-image", `url(${PATH_IMAGE_DEFAULT})`)
+          .css("background-repeat", "no-repeat");
+        setColor("#5f5f81");
+
+        $.each(PATH_PAINTING, function (i, v) {
+          $.each(v, function (i, vl) {
+            console.log(vl.name);
+            if (vl.name.includes(`${PAINTING_ID}`))
+              insertCard(BTN_ADDING_PAINTING_PREFIX, vl.name, vl.path);
+            else insertCard(SCENE_PREFIX, vl.name, vl.path);
+          });
+        });
+      }
+
+      function setColor(event) {
+        if (event.target) {
+          event = event.target.value;
+        }
+        $("#card-painting").css("background-color", event);
+      }
+
+      function insertPainting(btnId, imgName) {
+        const WIDTH_VALUE = 150;
+        const HEIGHT_VALUE = 150;
+        const CLASS_NAME = "paintingTesting";
+        const RESIZABLE_ID = "resizable";
+
+        $(`#${btnId}`).prop("disabled", true);
+        $("#card-painting").append(
+          `<div class="resizable" id="${RESIZABLE_ID}-${imgName}">
+          <img class="${CLASS_NAME}" src="./painting/${imgName}.jpg";/>
+          </div>`
+        );
+
+        $(`#${RESIZABLE_ID}-${imgName}`).draggable({
+          containment: "#card-painting",
+        });
+        $(`#${RESIZABLE_ID}-${imgName}`).resizable({
+          handles: "all",
+          containment: "#card-painting",
+        });
+
+        $(`.${CLASS_NAME}`).css("cursor", "move");
+      }
+
+      function insertCard(prefix, name, path) {
+        const WIDTH_VALUE = 9;
+        $(
+          `#${
+            prefix == BTN_ADDING_PAINTING_PREFIX
+              ? "card-painting-scene"
+              : "card-scene"
+          }`
+        ).append(`
+          <div class="card me-2" style="width: ${WIDTH_VALUE}rem">
+            <img src="${path}" class="card-img-top" />
+            <div class="card-body">
+              <button id="${prefix}${name}" class="btn btn-outline-info"
+              ${
+                name.includes(`${PAINTING_ID}`)
+                  ? `onclick="insertPainting('${prefix}${name}', '${name}')`
+                  : `onclick="modifyScene('${path}')"`
+              }
+              ">
+              ${
+                name.includes(`${PAINTING_ID}`)
+                  ? "Adding Painting"
+                  : "Change Scene"
+              }</button>
+            </div>
+          </div>`);
+      }
+
+      function modifyScene(path) {
+        $("#card-painting").css("background-image", `url(${path})`);
+      }
+    </script>
+  </body>
+</html>
