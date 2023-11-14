@@ -197,6 +197,7 @@
       const SCENE_PREFIX = "image-scene-";
       const ID_CARD_PAINTING = "card-painting-scene";
       const ID_CARD_SCENE = "card-scene";
+      const CARD_PAINTIN_ID = "card-painting";
       const PATH_PAINTING = {
         paintings: [
           { name: "painting1", path: "./painting/painting1.jpg" },
@@ -238,24 +239,25 @@
       }
 
       function insertPainting(btnId, imgName) {
-        const WIDTH_VALUE = 150;
-        const HEIGHT_VALUE = 150;
+        const WIDTH_VALUE = 200;
+        const HEIGHT_VALUE = 180;
         const CLASS_NAME = "paintingTesting";
-        const RESIZABLE_ID = "resizable";
+        const RESIZABLE_ID = `resizable-${imgName}`;
 
         $(`#${btnId}`).prop("disabled", true);
-        $("#card-painting").append(
-          `<div class="resizable" id="${RESIZABLE_ID}-${imgName}">
-          <img class="${CLASS_NAME}" src="./painting/${imgName}.jpg";/>
+
+        $(`#${CARD_PAINTIN_ID}`).append(
+          `<div class="resizable" id="${RESIZABLE_ID}">
+          <img class="${CLASS_NAME}" src="./painting/${imgName}.jpg"/>
           </div>`
         );
 
-        $(`#${RESIZABLE_ID}-${imgName}`).draggable({
-          containment: "#card-painting",
+        $(`#${RESIZABLE_ID}`).draggable({
+          containment: `#${CARD_PAINTIN_ID}`,
         });
-        $(`#${RESIZABLE_ID}-${imgName}`).resizable({
+        $(`#${RESIZABLE_ID}`).resizable({
           handles: "all",
-          containment: "#card-painting",
+          containment: `#${CARD_PAINTIN_ID}`,
         });
 
         $(`.${CLASS_NAME}`).css("cursor", "move");
@@ -263,7 +265,17 @@
       }
 
       function insertCard(prefix, name, path) {
-        const WIDTH_VALUE = "250px";
+        const MAX_WIDTH_VALUE = "200px";
+        const MAX_HEIGHT_VALUE = "180px";
+        const MAX_PADDING = 0;
+        const IMG_ID = `${prefix}${name}`;
+
+        // if ($(`#${CARD_PAINTIN_ID}`).children(`#${IMG_ID}`).length) {
+        //   $(`#${IMG_ID}`)
+        //     .css("point-event", "none")
+        //     .css("cursor", "not-allowed");
+        // }
+
         $(
           `#${
             prefix == BTN_ADDING_PAINTING_PREFIX
@@ -271,13 +283,22 @@
               : `${ID_CARD_SCENE}`
           }`
         ).append(`
-          <div class="card me-2" style="max-width: ${WIDTH_VALUE}">
-            <img id="${prefix}${name}" ${
+          <div class="card me-2" style="padding:${MAX_PADDING};max-width: ${MAX_WIDTH_VALUE};max-height:${MAX_HEIGHT_VALUE}">
+              <img style="height:100%" id="${IMG_ID}" ${
           name.includes(`${PAINTING_ID}`)
-            ? `onclick="insertPainting('${prefix}${name}', '${name}')"`
+            ? `onclick="insertPainting('${IMG_ID}', '${name}')"`
             : `onclick="modifyScene('${path}')"`
         } src="${path}" class="card-img-top" />
           </div>`);
+
+        $(".paintingTesting").each(function (k, v) {
+          if (v.getAttribute("src") === path) {
+            let parentImg = $(`#${IMG_ID}`)
+              .parent()
+              .css("cursor", "not-allowed");
+            $(`#${IMG_ID}`).css("pointer-events", "none");
+          }
+        });
       }
 
       function clearCards(ids) {
@@ -285,6 +306,7 @@
           $(`#${v}`).children().remove();
         });
       }
+
       function modifyScene(path) {
         $("#card-painting").css("background-image", `url(${path})`);
         $(".btn-close").click();
