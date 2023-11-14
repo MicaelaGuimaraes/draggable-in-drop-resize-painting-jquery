@@ -14,8 +14,24 @@
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/b51b078e0a.js"
+      crossorigin="anonymous"
+    ></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
@@ -26,55 +42,152 @@
   <body>
     <div class="container">
       <div class="row mt-4 mb-4">
-        <div class="col-md-3 col-lg-3">
-          <div class="mb-3">
-            <div>
-              <label for="colors">Colors:</label>
-              <br />
-              <button
-                class="btn btn-outline-primary ml-2"
-                onclick="setColor('blue')"
-              >
-                Blue
-              </button>
-              <button
-                class="btn btn-outline-danger ml-2"
-                onclick="setColor('red')"
-              >
-                Red
-              </button>
-              <button
-                class="btn btn-outline-dark ml-2"
-                onclick="setColor('black')"
-              >
-                Black
-              </button>
-              <button
-                class="btn btn-outline-warning ml-2"
-                onclick="setColor('yellow')"
-              >
-                Yellow
-              </button>
+        <div class="col-md-12 col-lg-12 mb-4">
+          <div class="card">
+            <div id="card-painting" class="container-card"></div>
+            <div class="card-footer">
+              <div class="row justify-content-center">
+                <div class="btn-group" role="group">
+                  <button
+                    type="button"
+                    class="btn btn-primary me-2"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-title="Menu"
+                  >
+                    <i class="fa-solid fa-bars"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary me-2"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasRooms"
+                    aria-controls="offcanvasRooms"
+                    onclick="loadData('scene')"
+                  >
+                    <a
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="bottom"
+                      data-bs-title="Rooms"
+                    >
+                      <i class="fa-solid fa-square-plus"></i>
+                    </a>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary me-2"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasRooms"
+                    aria-controls="offcanvasRooms"
+                    onclick="loadData('paintings')"
+                  >
+                    <a
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="bottom"
+                      data-bs-title="Arts"
+                    >
+                      <i class="fa-regular fa-image"></i>
+                    </a>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary me-2"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-title="Frames"
+                  >
+                    <i class="fa-solid fa-crop-simple"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary me-2"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-title="Share"
+                  >
+                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary me-2"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-title="Edit"
+                  >
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary me-2"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-title="Clear"
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </div>
+              </div>
             </div>
-            <div>
-              <label for="colorPicker">Color picker:</label><br />
-              <input id="colorPicker" type="color" />
-            </div>
           </div>
-          <div>
-            <label>Change scene:</label>
-            <div class="row mt-2" id="card-scene"></div>
-          </div>
-          <div>
-            <label>Adding Painting in scene:</label>
-            <div class="row mt-2" id="card-painting-scene"></div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-6 mb-4">
-          <div id="card-painting" class="container-card"></div>
         </div>
       </div>
+
+      <!-- offcanvas -->
+
+      <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasRooms">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title">Select a room</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="offcanvas-body small">
+          <div class="row mt-2" id="card-scene"></div>
+          <div class="row mt-2" id="card-painting-scene"></div>
+        </div>
+      </div>
+
+      <!-- <div class="col-md-4 col-lg-4">
+        <div class="mb-3">
+          <div>
+            <label for="colors">Colors:</label>
+            <br />
+            <button
+              class="btn btn-outline-primary ml-2"
+              onclick="setColor('blue')"
+            >
+              Blue
+            </button>
+            <button
+              class="btn btn-outline-danger ml-2"
+              onclick="setColor('red')"
+            >
+              Red
+            </button>
+            <button
+              class="btn btn-outline-dark ml-2"
+              onclick="setColor('black')"
+            >
+              Black
+            </button>
+            <button
+              class="btn btn-outline-warning ml-2"
+              onclick="setColor('yellow')"
+            >
+              Yellow
+            </button>
+          </div>
+          <div>
+            <label for="colorPicker">Color picker:</label><br />
+            <input id="colorPicker" type="color" />
+          </div>
+        </div>
+      </div> -->
     </div>
+
     <script>
       let colorPicker;
       const PAINTING_ID = "painting";
@@ -82,6 +195,8 @@
       const PATH_IMAGE_DEFAULT = "./image/emptyRoom1.png";
       const BTN_ADDING_PAINTING_PREFIX = "btn-adding-painting-";
       const SCENE_PREFIX = "image-scene-";
+      const ID_CARD_PAINTING = "card-painting-scene";
+      const ID_CARD_SCENE = "card-scene";
       const PATH_PAINTING = {
         paintings: [
           { name: "painting1", path: "./painting/painting1.jpg" },
@@ -102,14 +217,16 @@
         $("#card-painting")
           .css("background-image", `url(${PATH_IMAGE_DEFAULT})`)
           .css("background-repeat", "no-repeat");
-        setColor("#5f5f81");
 
-        $.each(PATH_PAINTING, function (i, v) {
-          $.each(v, function (i, vl) {
-            if (vl.name.includes(`${PAINTING_ID}`))
-              insertCard(BTN_ADDING_PAINTING_PREFIX, vl.name, vl.path);
-            else insertCard(SCENE_PREFIX, vl.name, vl.path);
-          });
+        setColor("#5f5f81");
+      }
+
+      function loadData(data) {
+        clearCards([ID_CARD_PAINTING, ID_CARD_SCENE]);
+        $.each(PATH_PAINTING[`${data}`], function (i, vl) {
+          vl.name.includes(`${PAINTING_ID}`)
+            ? insertCard(BTN_ADDING_PAINTING_PREFIX, vl.name, vl.path)
+            : insertCard(SCENE_PREFIX, vl.name, vl.path);
         });
       }
 
@@ -145,36 +262,41 @@
       }
 
       function insertCard(prefix, name, path) {
-        const WIDTH_VALUE = 9;
+        const WIDTH_VALUE = "250px";
         $(
           `#${
             prefix == BTN_ADDING_PAINTING_PREFIX
-              ? "card-painting-scene"
-              : "card-scene"
+              ? `${ID_CARD_PAINTING}`
+              : `${ID_CARD_SCENE}`
           }`
         ).append(`
-          <div class="card me-2" style="width: ${WIDTH_VALUE}rem">
-            <img src="${path}" class="card-img-top" />
-            <div class="card-body">
-              <button id="${prefix}${name}" class="btn btn-outline-info"
-              ${
-                name.includes(`${PAINTING_ID}`)
-                  ? `onclick="insertPainting('${prefix}${name}', '${name}')`
-                  : `onclick="modifyScene('${path}')"`
-              }
-              ">
-              ${
-                name.includes(`${PAINTING_ID}`)
-                  ? "Adding Painting"
-                  : "Change Scene"
-              }</button>
-            </div>
+          <div class="card me-2" style="max-width: ${WIDTH_VALUE}">
+            <img id="${prefix}${name}" ${
+          name.includes(`${PAINTING_ID}`)
+            ? `onclick="insertPainting('${prefix}${name}', '${name}')"`
+            : `onclick="modifyScene('${path}')"`
+        } src="${path}" class="card-img-top" />
           </div>`);
       }
 
+      function clearCards(ids) {
+        $.each(ids, function (i, v) {
+          $(`#${v}`).children().remove();
+        });
+      }
       function modifyScene(path) {
         $("#card-painting").css("background-image", `url(${path})`);
+        $(".btn-close").click();
       }
+    </script>
+
+    <script>
+      const tooltipTriggerList = document.querySelectorAll(
+        '[data-bs-toggle="tooltip"]'
+      );
+      const tooltipList = [...tooltipTriggerList].map(
+        (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+      );
     </script>
   </body>
 </html>

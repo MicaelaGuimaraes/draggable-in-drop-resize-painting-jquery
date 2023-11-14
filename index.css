@@ -1,6 +1,6 @@
 .container-card {
-  width: 615px;
-  height: 407px;
+  width: 100%;
+  height: 600px;
 }
 
 .resizable {
@@ -11,4 +11,14 @@
 .resizable img {
   width: 100%;
   height: 100%;
+}
+
+#card-painting {
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.card img[id^="image-scene"] {
+  width: 250px;
+  height: 130px;
 }
